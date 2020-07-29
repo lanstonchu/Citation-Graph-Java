@@ -42,7 +42,7 @@ Overview: This tool is written by Java and based on JavaFX. The tool will automa
 1. Download Chrome Driver at [here][6] with respect to your Chrome version and OS (the current versions stored in `/chrome_driver` is for Chrome version v83, and is for Windows only). Rename the driver as `chromedriver_win32.exe` and put it in `/chrome_driver`.
 2. Select papers from your references management software (e.g. Mendeley) and export to .bib file.
 3. Locate your JavaFX lib path, e.g. `C:\Program Files\Java\javafx-sdk-11.0.2\lib` in Windows
-4. In your command window (e.g. `cmd`), execute `java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules javafx.controls,javafx.fxml -jar executable.jar` to run `executable.jar`.
+4. In your command window (e.g. `cmd`), go to the project directory and execute `java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules javafx.controls,javafx.fxml -jar executable.jar` to run `executable.jar`.
 5. If you modified the source code and would like to generate a new jar file, go to the project directory and run `jar -cfm executable.jar manifest.txt -C ./bin .`
 ---------------------------
 
