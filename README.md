@@ -89,7 +89,7 @@ If you want to filter papers by year range, or to show ancestor of a specific pa
 **References:**
 - [Wikipedia: Directed Acyclic Graph][7]
 
-[1]: https://abc.com/Citation_Graph_Output_Sample.PNG
+[1]: https://github.com/lanstonchu/Citation-Graph-Java/blob/master/GUI_Screenshots/Citation_Graph_Output_Sample.PNG
 [2]: https://github.com/lanstonchu/citation-graph
 [3]: https://github.com/lanstonchu/Citation-Graph-Python
 [4]: https://ui.adsabs.harvard.edu/
@@ -99,6 +99,6 @@ If you want to filter papers by year range, or to show ancestor of a specific pa
 [8]: https://mvnrepository.com/artifact/org.jbibtex/jbibtex/1.0.17
 [9]: https://www.selenium.dev/downloads/
 [10]: https://jgrapht.org/
-[11]: https://abc.com/Import_Bib.gif
-[12]: https://abc.com/Citation_Web_Scrapping.gif
-[13]:  https://abc.com/Draw_Citation_Graph.gif
+[11]: https://github.com/lanstonchu/Citation-Graph-Java/blob/master/GUI_Screenshots/Import_Bib.gif
+[12]: https://github.com/lanstonchu/Citation-Graph-Java/blob/master/GUI_Screenshots/Citation_Web_Scrapping.gif
+[13]: https://github.com/lanstonchu/Citation-Graph-Java/blob/master/GUI_Screenshots/Draw_Citation_Graph.gif
