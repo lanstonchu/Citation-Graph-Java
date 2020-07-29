@@ -832,7 +832,7 @@ public class Main extends Application {
 			/**
 			 * (For Debugging Purpose Only)
 			 * 
-			 * this will generate the constructor being used to create new papers, based on some imported papers
+			 * this will generate the constructor being used to create new papers, based on some information of the imported papers
 			 * the output of this method can be used as the input of createSampleData()   
 			 *
 			 * @param  e The event that clicking the generate-constructor-button
