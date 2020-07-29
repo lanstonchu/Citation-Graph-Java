@@ -25,7 +25,7 @@ Overview: This tool is written by Java and based on JavaFX. The tool will automa
     |    ├──manifest.txt    
     |    └──executable.jar    
     ├──/chrome_driver
-    |    └──chromedriver_win32_vXX.exe    
+    |    └──chromedriver_win32.exe    
     └──/jar_3rd_party              
     |    ├──/selenium-java-XX.YY.ZZ
     |    |    └──*.jar        
@@ -43,13 +43,15 @@ Overview: This tool is written by Java and based on JavaFX. The tool will automa
 2. Select papers from your references management software (e.g. Mendeley) and export to .bib file.
 3. Locate your JavaFX lib path, e.g. `C:\Program Files\Java\javafx-sdk-11.0.2\lib` in Windows 10
 4. In your command windows (e.g. `cmd`), execute `java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules javafx.controls,javafx.fxml -jar executable.jar` to run `executable.jar`.
-
+5. If you modified the source code and would like to generate a new jar file, go inside `/bin` and run `jar -cfm executable.jar manifest.txt .`
 ---------------------------
 
 **Trouble shooting:**
 
 1. If your Chrome driver doesn't work, please confirm you are using the correct driver version.
 2. Some references quoted by the paper may not be contained in the database (i.e. [Astrophysics Data System of Harvard][4]). If the number of references of a specific paper exceed 25 in the database, and only the first 25 references will be extracted.
+3. If you don't have JavaFX lib, you can download it from [here][14]. Unzip the folder and place it to somewhere in your computer. Record the path for later use.
+4. If you need to download JavaFX lib or if your javafx-sdk is not v11.0.2, you may need to re-build the path in Eclipse. Right click the project name "Citation-Graph-Java" in Eclipse, and then `Build Path` -> `Configure Build Path...`. Add libraries to Classpath, including JavaFX SDK as well as other JavaFX jar files downloaded.
 
 -----------------------------------------
 
@@ -102,3 +104,4 @@ If you want to filter papers by year range, or to show ancestor of a specific pa
 [11]: https://github.com/lanstonchu/Citation-Graph-Java/blob/master/GUI_Screenshots/Import_Bib.gif
 [12]: https://github.com/lanstonchu/Citation-Graph-Java/blob/master/GUI_Screenshots/Citation_Web_Scrapping.gif
 [13]: https://github.com/lanstonchu/Citation-Graph-Java/blob/master/GUI_Screenshots/Draw_Citation_Graph.gif
+[14]: https://gluonhq.com/products/javafx/
