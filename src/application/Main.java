@@ -3,7 +3,9 @@
  * @version 1.0
  * Class: CS 400 - Programming III
  * Author's email: hchu34@wisc.edu
- * Project description: This is the GUI of the final project. For the structure of the GUI, please refer to the readme file. 
+ * Project description: In this project, user can import papers information from a .bib file, 
+ * and then do web scrapping to get the citation relationship among papers.
+ * After that, a citation graph will be drawn to illustrate the citational relationship. 
  */
 
 package application;
@@ -64,7 +66,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 
-
+/**
+ * The Main class is the main class to run JavaFX GUI
+ * The GUI contains 3 tabs: Input, Table, Graph
+ * Input: to import .bib file
+ * Table: to show the imported data of papers
+ * Graph: to draw citation graph
+ */
 public class Main extends Application {
 	// store any command-line arguments that were entered.
 	// NOTE: this.getParameters().getRaw() will get these also
@@ -79,26 +87,26 @@ public class Main extends Application {
 
 	private TextArea outputArea = new TextArea();
 	private StringProperty statusText = new SimpleStringProperty();
-	
+
 	final Region marginArea = new Region(); // for the empty space between
 	final Label labelMargin = new Label(""); // for the empty space between
 
-	GraphJFrame myFrame = new GraphJFrame();
+	final GraphJFrame myFrame = new GraphJFrame();
 
 	private int id; // paper id counter
 
-	
+
 	// unhide below 2 lines for debugging; hide in normal use
 	// private final int debugFlag = 1;
 	// private final ObservableList<Paper> data = createSampleData();
 
-	
-	
+
+
 	// unhide below 2 lines for normal use; hide when debugging
 	private final int debugFlag = 0;
 	private final ObservableList<Paper> data = FXCollections.observableArrayList(); // create blank list
 
-	
+
 	// For graph drawing
 	final ArrayList<Integer> fromVertices = new ArrayList<Integer>(); // from-vertices to create graph
 	final ArrayList<Integer> toVertices = new ArrayList<Integer>(); // to-vertices to create graph
@@ -124,11 +132,11 @@ public class Main extends Application {
 
 		// bind the text area
 		outputArea.textProperty().bind(statusText);
-		
+
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE); // not allow user to close tab
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
 
-		// ------- PART I - 1st Tab: Input ---------
+		// ------- PART I.1 - 1st Tab: Input ---------
 
 		final HBox hbox1 = new HBox();
 
@@ -153,7 +161,7 @@ public class Main extends Application {
 		final Tab tab1 = new Tab("Input", hbox1);
 		tabPane.getTabs().add(tab1);
 
-		// ------- PART II - 2nd Tab: Table ---------
+		// ------- PART I.2 - 2nd Tab: Table ---------
 
 		final HBox hbox2a = new HBox();
 		final TableView<Paper> table2 = new TableView<Paper>();
@@ -167,12 +175,12 @@ public class Main extends Application {
 		hbox2a.getChildren().addAll(label2a, label2b);
 		hbox2a.setAlignment(Pos.BOTTOM_LEFT);
 
-		RadioButtonGroup rbg2b = new RadioButtonGroup("Title?    ", new ArrayList<String>(Arrays.asList("Title", "Nickname")));
+		final RadioButtonGroup rbg2b = new RadioButtonGroup("Title?    ", new ArrayList<String>(Arrays.asList("Title", "Nickname")));
 		final HBox hbox2b = rbg2b.getHBox();
 		final ToggleGroup group2b = rbg2b.getToggleGroup();
 		rbg2b.setAlignment(Pos.BOTTOM_LEFT);
 
-		RadioButtonGroup rbg2c = new RadioButtonGroup("                         References?    ", new ArrayList<String>(Arrays.asList("BibCode (Full)", "BibCode (Filtered)    ", "ID")));
+		final RadioButtonGroup rbg2c = new RadioButtonGroup("                         References?    ", new ArrayList<String>(Arrays.asList("BibCode (Full)", "BibCode (Filtered)    ", "ID")));
 		final HBox hbox2c = rbg2c.getHBox();
 		final ToggleGroup group2c = rbg2c.getToggleGroup();
 		rbg2c.setAlignment(Pos.BOTTOM_RIGHT);
@@ -185,88 +193,88 @@ public class Main extends Application {
 
 		// column for ID
 		myFunctionNumber = (Paper e)-> {return e.getIdProperty();};
-		TableColumn<Paper, Number> idCol  = TableColumns.create("ID", 20, myFunctionNumber, EDITABLE_FALSE);
+		final TableColumn<Paper, Number> idCol  = TableColumns.create("ID", 20, myFunctionNumber, EDITABLE_FALSE);
 		// titleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// column for Title
 		myFunctionString = (Paper e)-> {return e.getTitleProperty();};
-		TableColumn<Paper, String> titleCol = TableColumns.create("Title", 140, myFunctionString, EDITABLE_TRUE);
+		final TableColumn<Paper, String> titleCol = TableColumns.create("Title", 140, myFunctionString, EDITABLE_TRUE);
 		titleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// column for Title Nickname
 		myFunctionString = (Paper e)-> {return e.getTitleNickNameProperty();};
-		TableColumn<Paper, String> titleNickNameCol = TableColumns.create("Paper \n Nickname", 140, myFunctionString, EDITABLE_TRUE);
+		final TableColumn<Paper, String> titleNickNameCol = TableColumns.create("Paper \n Nickname", 140, myFunctionString, EDITABLE_TRUE);
 		titleNickNameCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// bind the column width of titleCol and titleNickNameCol  
 		titleNickNameCol.prefWidthProperty().bind(titleCol.widthProperty());
 		titleCol.prefWidthProperty().bind(titleNickNameCol.widthProperty());
-		
+
 		// column for main author
 		myFunctionString = (Paper e)-> {return e.getMainAuthorProperty();};
-		TableColumn<Paper, String> mainAuthorCol = TableColumns.create("Main", 100, myFunctionString, EDITABLE_TRUE);
+		final TableColumn<Paper, String> mainAuthorCol = TableColumns.create("Main", 100, myFunctionString, EDITABLE_TRUE);
 		mainAuthorCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// column for other author(s)
 		myFunctionString = (Paper e)-> {return e.getOtherAuthorProperty();};
-		TableColumn<Paper, String> otherAuthorCol = TableColumns.create("Other", 150, myFunctionString, EDITABLE_TRUE);
+		final TableColumn<Paper, String> otherAuthorCol = TableColumns.create("Other", 150, myFunctionString, EDITABLE_TRUE);
 		otherAuthorCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// column for number of author(s)
 		myFunctionNumber = (Paper e)-> {return e.getAuthorNumProperty();};
-		TableColumn<Paper, Number> authorNumCol = TableColumns.create("#", 20, myFunctionNumber, EDITABLE_TRUE);
+		final TableColumn<Paper, Number> authorNumCol = TableColumns.create("#", 20, myFunctionNumber, EDITABLE_TRUE);
 		authorNumCol.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter())); // make the column editable
 
 		// column for year
 		myFunctionString = (Paper e)-> {return e.getYearProperty();};
-		TableColumn<Paper, String> yearCol  = TableColumns.create("Year", 50, myFunctionString, EDITABLE_TRUE);
+		final TableColumn<Paper, String> yearCol  = TableColumns.create("Year", 50, myFunctionString, EDITABLE_TRUE);
 		yearCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// column for ArVix ID
 		myFunctionString = (Paper e)-> {return e.getArxivIdProperty();};
-		TableColumn<Paper, String> arxivIdCol  = TableColumns.create("ArXiv ID", 50, myFunctionString, EDITABLE_TRUE);
+		final TableColumn<Paper, String> arxivIdCol  = TableColumns.create("ArXiv ID", 50, myFunctionString, EDITABLE_TRUE);
 		arxivIdCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable	
 
 		// column for DOI
 		myFunctionString = (Paper e)-> {return e.getDoiProperty();};
-		TableColumn<Paper, String> doiCol  = TableColumns.create("DOI", 50, myFunctionString, EDITABLE_TRUE);
+		final TableColumn<Paper, String> doiCol  = TableColumns.create("DOI", 50, myFunctionString, EDITABLE_TRUE);
 		doiCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// column for BibCode
 		myFunctionString = (Paper e)-> {return e.getBibCodeProperty();};
-		TableColumn<Paper, String> bibCodeCol  = TableColumns.create("BibCode", 50, myFunctionString, EDITABLE_FALSE);
+		final TableColumn<Paper, String> bibCodeCol  = TableColumns.create("BibCode", 50, myFunctionString, EDITABLE_FALSE);
 		// bibCodeCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// column for Children's BibCode (full)
 		myFunctionString = (Paper e)-> {return e.getListChildrenBibCodeProperty();};
-		TableColumn<Paper, String> childrenBibCodeCol  = TableColumns.create("References \n BibCode (Full)", 120, myFunctionString, EDITABLE_FALSE);
+		final TableColumn<Paper, String> childrenBibCodeCol  = TableColumns.create("References \n BibCode (Full)", 120, myFunctionString, EDITABLE_FALSE);
 		// childrenBibCodeCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// column for Children's BibCode (filtered)
 		myFunctionString = (Paper e)-> {return e.getListChildrenBibCodeFilteredProperty();};
-		TableColumn<Paper, String> childrenBibCodeFilteredCol  = TableColumns.create("References \n BibCode (Filtered)", 120, myFunctionString, EDITABLE_FALSE);
+		final TableColumn<Paper, String> childrenBibCodeFilteredCol  = TableColumns.create("References \n BibCode (Filtered)", 120, myFunctionString, EDITABLE_FALSE);
 		// childrenBibCodeCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
-		
+
 		// column for Childre's ID
 		myFunctionString = (Paper e)-> {return e.getListChildrenIdProperty();};
-		TableColumn<Paper, String> childrenIdCol  = TableColumns.create("References \n ID (Filtered)", 120, myFunctionString, EDITABLE_FALSE);
+		final TableColumn<Paper, String> childrenIdCol  = TableColumns.create("References \n ID (Filtered)", 120, myFunctionString, EDITABLE_FALSE);
 		// childrenBibCodeCol.setCellFactory(TextFieldTableCell.forTableColumn()); // make the column editable
 
 		// bind the column width of titleCol and titleNickNameCol  
 		childrenIdCol.prefWidthProperty().bind(childrenBibCodeCol.widthProperty());
 		childrenBibCodeCol.prefWidthProperty().bind(childrenBibCodeFilteredCol.widthProperty());
 		childrenBibCodeFilteredCol.prefWidthProperty().bind(childrenIdCol.widthProperty());
-		
+
 		// Binding data and table
 		table2.setItems(data);
 
 		// Adding columns
 		final TableColumn authorHeadCol = new TableColumn("Author(s)");
 		authorHeadCol.getColumns().addAll(mainAuthorCol, otherAuthorCol, authorNumCol);
-		
+
 		table2.getColumns().addAll(idCol, titleCol, titleNickNameCol, authorHeadCol, yearCol, 
 				childrenBibCodeCol, childrenBibCodeFilteredCol, childrenIdCol, arxivIdCol, doiCol, bibCodeCol);
-		
+
 		titleNickNameCol.setVisible(false);
 		childrenBibCodeFilteredCol.setVisible(false);
 		childrenIdCol.setVisible(false);
@@ -315,7 +323,7 @@ public class Main extends Application {
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10, 0, 0, 10));
 		vbox.setAlignment(Pos.CENTER);
-		
+
 		if (debugFlag == 1) {
 			vbox.getChildren().addAll(hbox2a, hbox2bc, table2, hbox2d, hbox2e, exportStringButton, webScrappingButton); // have an extra export-string button when debugging
 		}else if(debugFlag == 0) {
@@ -328,11 +336,11 @@ public class Main extends Application {
 		final Tab tab2= new Tab("Table", vbox);
 		tabPane.getTabs().add(tab2);
 
-		// ------- PART III - 3rd Tab: Graph ---------
+		// ------- PART I.3 - 3rd Tab: Graph ---------
 
 		final HBox hbox3d = new HBox();
 		final HBox hbox3e = new HBox();
-		
+
 		final VBox vbox3R = new VBox();
 
 		final Button buttonRefresh = new Button("Generate / Refresh");
@@ -340,26 +348,26 @@ public class Main extends Application {
 		final Label labelGraphSetting = new Label("Graph Setting:                        ");
 		labelGraphSetting.setFont(new Font("Arial", 16));
 		final HBox hboxGraphSetting = new HBox(labelGraphSetting);
-		
+
 		// Group A: Title vs Nickname
-		RadioButtonGroup rbg3a = new RadioButtonGroup("Show nickname?    ", new ArrayList<String>(Arrays.asList("Title     ", "Nickname  ")));
+		final RadioButtonGroup rbg3a = new RadioButtonGroup("Show nickname?    ", new ArrayList<String>(Arrays.asList("Title     ", "Nickname  ")));
 		final HBox hbox3a = rbg3a.getHBox();
 		final ToggleGroup group3a = rbg3a.getToggleGroup();
 
 		// Group B: Show author vs hide author
-		RadioButtonGroup rbg3b = new RadioButtonGroup("Main author?          ", new ArrayList<String>(Arrays.asList("Show         ", "Hide         ")));
+		final RadioButtonGroup rbg3b = new RadioButtonGroup("Main author?          ", new ArrayList<String>(Arrays.asList("Show         ", "Hide         ")));
 		final HBox hbox3b = rbg3b.getHBox();
 		final ToggleGroup group3b = rbg3b.getToggleGroup();
 
 		// Group C: Show year vs hide year
-		RadioButtonGroup rbg3c = new RadioButtonGroup("Year?                       ", new ArrayList<String>(Arrays.asList("Show         ", "Hide         ")));
+		final RadioButtonGroup rbg3c = new RadioButtonGroup("Year?                       ", new ArrayList<String>(Arrays.asList("Show         ", "Hide         ")));
 		final HBox hbox3c = rbg3c.getHBox();
 		final ToggleGroup group3c = rbg3c.getToggleGroup();
 
 		final Label labelPaperSelection = new Label("Paper Selection:                    ");
 		labelPaperSelection.setFont(new Font("Arial", 16));
 		final HBox hboxPaperSelection = new HBox(labelPaperSelection);
-		
+
 		// Group D: Year range		
 		final TextField  textIn3d1 = new TextField(); // year from
 		final TextField  textIn3d2 = new TextField(); // year to
@@ -380,10 +388,10 @@ public class Main extends Application {
 		textIn3d3.setPromptText("Paper ID");
 
 		// Group F: Show singleton vs hide singleton
-		RadioButtonGroup rbg3f = new RadioButtonGroup("Singleton?                  ", new ArrayList<String>(Arrays.asList("Hide         ", "Show         ")));
+		final RadioButtonGroup rbg3f = new RadioButtonGroup("Singleton?                  ", new ArrayList<String>(Arrays.asList("Hide         ", "Show         ")));
 		final HBox hbox3f = rbg3f.getHBox();
 		final ToggleGroup group3f = rbg3f.getToggleGroup();
-				
+
 		vbox3R.getChildren().addAll(hboxGraphSetting, hbox3a, hbox3b, hbox3c, buttonRefresh, hboxPaperSelection, hbox3d, label3Error, hbox3e, hbox3f);
 
 		hboxGraphSetting.setAlignment(Pos.CENTER_RIGHT);
@@ -396,24 +404,22 @@ public class Main extends Application {
 		hbox3e.setAlignment(Pos.CENTER_RIGHT);
 		// buttonRefresh.setAlignment(Pos.CENTER);
 		hbox3f.setAlignment(Pos.CENTER_RIGHT);
-		
+
 		vbox3R.setAlignment(Pos.CENTER); // for button 
 
 		final Tab tab3= new Tab("Graph", vbox3R);
 		tabPane.getTabs().add(tab3);
-		
-		// VBox vBox = new VBox(tabPane);
-		
+
+		// ------- PART I.4 - Add all Tabs, and Testing Codes ---------
+
 		hBoxOverTab.getChildren().addAll(vboxMainLeft, tabPane);
-		
+
 		final Scene scene = new Scene(hBoxOverTab, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		primaryStage.setScene(scene);
 		primaryStage.setTitle(APP_TITLE);
 
 		primaryStage.show();
-
-
 
 		// ### Testing codes : START ###
 		if (debugFlag == 1) {
@@ -427,31 +433,48 @@ public class Main extends Application {
 
 
 
-		// PART VI: buttons' definition
+		// PART II: buttons' definition
 
+		// ------- PART II.0 - Status ---------
 
-		// listener for statusText
-		// i.e. to be bind to the text area 
+		// Status text of the GUI
 		statusText.addListener(new ChangeListener<Object>() {
+
+			/**
+			 * listener for statusText
+			 * statusText is for text field updated of status, and will be binded to the output area
+			 *
+			 * @param  oldValue The original text before printing
+			 * @param  newValue The new text after printing 
+			 * @return none
+			 * @see stackoverflow.com/a/30264399/1032167
+			 * @see updateStatusText()
+			 */
 			@Override
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-				// from stackoverflow.com/a/30264399/1032167
-				// for some reason setScrollTop will not scroll properly
-				//consoleTextArea.setScrollTop(Double.MAX_VALUE);
 				outputArea.selectPositionCaret(outputArea.getLength()); 
 				outputArea.deselect(); 
 			}
 		});
+
+		// ------- PART II.1 - Tab 1 button(s)/Control ---------
 		
-		// clicking buttonImport of Tab1
+		// import .bib file
 		buttonImport.setOnAction(new EventHandler<ActionEvent>() {
 
+			/**
+			 * clicking buttonImport of Tab1 
+			 * the .bib file will be parsed and imported into data 
+			 *
+			 * @param  e The event of clicking the button
+			 * @return none
+			 */
 			@Override
 			public void handle(final ActionEvent e) {			
-				
+
 				System.out.println("A file is now being chosen ... ");
 				updateStatusText(statusText, "A file is now being chosen ... ");
-				
+
 				File bibFile = fileChooser.showOpenDialog(primaryStage);			
 
 				if (bibFile != null) {
@@ -534,8 +557,11 @@ public class Main extends Application {
 			}
 		});
 
-		// Showing full title or nickname
+		// ------- PART II.2 - Tab 2 button(s)/Control ---------
+		
+		// Tab 2 Radio buttons group to show title vs. nickname
 		group2b.selectedToggleProperty().addListener(new ChangeListener<Toggle>() { 
+
 			public void changed(ObservableValue<? extends Toggle> ob, Toggle o, Toggle n) 
 			{ 
 
@@ -559,7 +585,7 @@ public class Main extends Application {
 			} 
 		}); 
 
-		// Showing children BibCode or children ID
+		// Tab 2 Radio buttons group to show children's Bibcode vs. ID
 		group2c.selectedToggleProperty().addListener(new ChangeListener<Toggle>() { 
 			public void changed(ObservableValue<? extends Toggle> ob, Toggle o, Toggle n) 
 			{ 
@@ -589,9 +615,14 @@ public class Main extends Application {
 			} 
 		}); 
 
-		// clicking addButton of Tab2
+		// Tab2 button to add papers		
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 
+			/**
+			 * Add a new paper by using the data manually input by the user 
+			 *
+			 * @param  e The event that clicking the add-button
+			 */
 			@Override
 			public void handle(ActionEvent e) {
 				try {
@@ -621,7 +652,7 @@ public class Main extends Application {
 					addAllAuthor.clear();
 
 					updateStatusText(statusText, "Paper " + idNew + " is added.");
-					
+
 				}catch(NumberFormatException e2) {
 					// System.out.println("this is error man");
 					label2Error.setText("Year should be integer");
@@ -631,9 +662,14 @@ public class Main extends Application {
 			}
 		});
 
-		// clicking removeButton of Tab2
+		// Tab2 button to remove papers		
 		removeButton.setOnAction(new EventHandler<ActionEvent>() {
 
+			/**
+			 * Remove an existing paper by using the ID manually input by the user 
+			 *
+			 * @param  e The event that clicking the remove-button
+			 */
 			@Override
 			public void handle(ActionEvent e) {
 
@@ -642,16 +678,16 @@ public class Main extends Application {
 					int removeIdNum = Integer.parseInt(removeId.getText().trim());
 					data.removeIf(iPaper -> (iPaper.getIdNum() == removeIdNum)); // lambda expression
 					removeId.clear();
-					
+
 					updateStatusText(statusText, "Paper " + removeIdNum + " is removed.");
-					
+
 				}catch(NumberFormatException e2) {
 					label2Error_b.setText("ID should be integer");
 				}
 			}
 		});
 
-		// clicking webScrappingButton of Tab2
+		// Tab 2: doing web scrapping
 		webScrappingButton.setOnAction(new EventHandler<ActionEvent>() { 
 
 			String linkPrefix = "https://ui.adsabs.harvard.edu/#abs/";
@@ -662,7 +698,13 @@ public class Main extends Application {
 			Path projectPath = Paths.get(projectPathEclipse, "../");
 			String driverPath = projectPathEclipse + "/chrome_driver/chromedriver_win32.exe"; // use this line in Eclipse; or create .jar in /[project]
 			// String driverPath = projectPath + "/chrome_driver/chromedriver_win32.exe"; // use this line if to create .jar in /[project]/bin
-			
+
+			/**
+			 * To do web scrapping
+			 * by using the Chrome driver downloaded, Chrome will pop up to web-scrap the citational relationship of the imported papers  
+			 *
+			 * @param  e The event that clicking the web-scrapping-button
+			 */
 			@Override
 			public void handle(ActionEvent e) {
 
@@ -686,7 +728,7 @@ public class Main extends Application {
 						// print out the index of paper being scrapped
 						System.out.println("Paper: Scrapping " + j + " of " + numPapers);
 						updateStatusText(statusText, "Paper: Scrapping " + j + " of " + numPapers);
-						
+
 						String arXivID = paper.getArxivIdNoVerStr();
 
 						if (arXivID.trim()=="") { // jump to next paper if there is no arXivID
@@ -715,11 +757,11 @@ public class Main extends Application {
 
 						String num_Ref = search_by_head_tail(pageSourceRef,"References\n","</span>\n");
 						num_Ref = search_by_head_tail(num_Ref, "(", ")");
-						
+
 						// print out the no. of references
 						System.out.println("Refrences: (" + num_Ref + ")");
 						updateStatusText(statusText, "Refrences: (" + num_Ref + ")");
-						
+
 						// find the position of papers' titles
 						ArrayList<Integer> positions = new ArrayList<Integer>();
 						positions.add(0);
@@ -771,7 +813,7 @@ public class Main extends Application {
 					updateStatusText(statusText, "SessionNotCreatedException: It is very likely that your Google Chrome Driver is not in line with your current version (nor OS)");
 					updateStatusText(statusText, "Please visit    `https://sites.google.com/a/chromium.org/chromedriver/downloads`    to download the driver that suits your Google Chrome version, ");
 					updateStatusText(statusText, "and then replace the file in `" + driverPath + "` by the downloaded file");
-					
+
 					throw new RuntimeException("RuntimeException.");
 				}
 
@@ -784,9 +826,18 @@ public class Main extends Application {
 
 		});
 
-		// clicking exportStringButton of Tab2
+		// Tab 2: Export the string of constructor for debugging purpose
 		exportStringButton.setOnAction(new EventHandler<ActionEvent>() {
 
+			/**
+			 * (For Debugging Purpose Only)
+			 * 
+			 * this will generate the constructor being used to create new papers, based on some imported papers
+			 * the output of this method can be used as the input of createSampleData()   
+			 *
+			 * @param  e The event that clicking the generate-constructor-button
+			 * @see createSampleData
+			 */
 			@Override
 			public void handle(ActionEvent e) {
 
@@ -796,14 +847,21 @@ public class Main extends Application {
 			}
 		});
 
-		// Graph theory
+		// ------- PART II.3 - Tab 3 button(s)/Control ---------
 		
-		// clicking buttonRefresh of Tab3
+		// Graph theory
+
+		// Tab 3: clicking Refresh-button
 		buttonRefresh.setOnAction(new EventHandler<ActionEvent>() {
 			private static final int MAX_LINE_LENGTH = 25;
 
 			boolean showSingletonFlag;
 
+			/**
+			 * This will draw citation graph based on the imported papers' information, as well as the web-scrapped citational relationship  
+			 *
+			 * @param  e The event that clicking the Refresh-button
+			 */			
 			@Override
 			public void handle(final ActionEvent e) {
 				RadioButton rb3a = (RadioButton)group3a.getSelectedToggle(); // title vs. nickname
@@ -842,14 +900,14 @@ public class Main extends Application {
 					if (yearToNum < yearFromNum) {
 						throw new IllegalArgumentException("Year-from should not be larger than Year-to");
 					}
-			
+
 					try {
-					Collections.sort(data, new PaperYearComparator()); // sort paper by year
+						Collections.sort(data, new PaperYearComparator()); // sort paper by year
 					}catch(NumberFormatException e1) {
 						throw new IllegalArgumentException("Please make sure all papers have the \"year\" information. \n"
 								+ "Put \"0\" if you want to leave it blank.");
 					}
-					
+
 					// Construct validIdWithinYears and paperMapping
 					ArrayList<Integer> validIdWithinYears = new ArrayList<Integer>(); // Store ID that is within the selected year range
 					paperMapping.clear();
@@ -945,7 +1003,7 @@ public class Main extends Application {
 							}
 						}	
 					}
-					
+
 					if (str3f.equals("Show")) {                  	
 						showSingletonFlag = true;
 					}else if(str3f.equals("Hide")) {
@@ -955,9 +1013,9 @@ public class Main extends Application {
 					}
 
 					myFrame.drawJFrame(fromVertices, toVertices, vertexLabels, validIdWithinYears, showSingletonFlag);
-					
+
 					Collections.sort(data, new PaperIdComparator()); // sort paper by ID
-					
+
 					updateStatusText(statusText, "A new graph is drawn. ");
 					label3Error.setText("");
 				}catch(NumberFormatException e1) {
@@ -970,11 +1028,34 @@ public class Main extends Application {
 
 	} // end of "public void start()"
 
+    /**
+    * To update status text 
+    *
+    * @param  statusText   The text object that need text being updated
+    * @param  strIn   The latest text to be printed on the text object
+    * @see statusText.addListener()
+    */
+	static private void updateStatusText(StringProperty statusText, String strIn) {
+		if (statusText.getValue() == null) {
+			statusText.setValue(strIn);
+		}else {
+			statusText.setValue(statusText.getValue() +"\n" + strIn);
+		}
+		return;
+	}
+	
+    /**
+    * this method will search for the first head matching the result
+    * and then search for the first tail-after-1st-head
+    * and return the text between first head and first tail-after-1st-head
+    * e.g. search_by_head_tail("<id>123</id>", "<id>", "</id>") outputs "123"
+    *
+    * @param  longText   The text that we need to search for, e.g. some html source codes
+    * @param  head   The "head-bracket" of the text that we concerned, i.e. "<id>"
+    * @param  tail   The "tail-bracket" of the text that we concerned, i.e. "</id>"
+    * @return         The first piece of text surrounded by head and tail
+    */
 	static private String search_by_head_tail(String longText, String head, String tail) {
-		// this methd will search for the first head matching the result
-		// and then search for the first tail-after-1st-head
-		// and return the text between first head and first tail-after-1st-head
-		// e.g. search_by_head_tail("<id>123</id>", "<id>", "</id>") outputs "123"
 
 		int headPosi = longText.indexOf(head);
 		String longTextCropped = longText.substring(headPosi + head.length(), longText.length());
@@ -983,15 +1064,20 @@ public class Main extends Application {
 		return phase_extracted;
 	}
 
+    /**
+    * this method add matched ID to listChildrenIdArray of each papers, based on the bibCode we scrapped from the web
+    *
+    * @param  data   The collection of papers
+    * @param  bibCodeChild   The bibCode of children of a specific paper; scrapped from web
+    */
 	static private void parseChildrenBibCodeToID(ObservableList<Paper> data) {
-		// add matched ID to listChildrenIdArray of each papers
 
 		for (Paper paper : data) {
 
 			ArrayList<String> list_children = paper.getListChildrenBibCodeArray();
 			ArrayList<Integer> filteredChildrenId = new ArrayList<Integer>();
 			ArrayList<String> filteredChildrenBibCode = new ArrayList<String>();
-			
+
 			for (String bibCodeChild : list_children) { // try to find ID of the children that exists in selected list
 				for (Paper paperIn : data) {
 					if (paperIn.getBibCode().equals(bibCodeChild)) {
@@ -1008,6 +1094,11 @@ public class Main extends Application {
 
 	}
 
+    /**
+    * get the maximum ID of the existing papers, properly after some manually addition/removal of papers by the user
+    *
+    * @param  data   The collection of papers
+    */
 	static private int getMaxID(ObservableList<Paper> data) {
 		int maxId = 0;
 		for (Paper paper: data) {
@@ -1017,6 +1108,14 @@ public class Main extends Application {
 
 	}	
 
+    /**
+    * this method will cut the input string into pieces based on the desired max. length
+    * the original purpose of this method is to avoid having too large width of the vertex of the citation graph
+    *
+    * @param  strIn   The long string to be cut into pieces
+    * @param  maxLength The desired maximum length
+    * @return The cut string with multiple "\n" 
+    */
 	static private String cutString(String strIn, int maxLength) {
 
 		String strRemained = strIn;
@@ -1026,7 +1125,7 @@ public class Main extends Application {
 
 			String strFront = strRemained.substring(0, maxLength);
 			int posiSpace = strFront.lastIndexOf(" ");
-			
+
 			if (posiSpace == -1) { // if there is no space in strFront, just take the entire string 
 				strTotal = strTotal + strFront  + "\n"; 
 				strRemained = strRemained.substring(maxLength, strRemained.length());
@@ -1035,7 +1134,7 @@ public class Main extends Application {
 				strRemained = strRemained.substring(posiSpace + 1, strRemained.length());	
 			}
 
-			
+
 		}
 		strTotal = strTotal + strRemained; 
 
@@ -1043,6 +1142,13 @@ public class Main extends Application {
 
 	}
 
+    /**
+    * To generate a sub-set of papers, which only keep the ancestors of the paper manually selected by the user
+    *
+    * @param  subRoot   The ID of the paper manuall chosen by the user
+    * @param  childrenMapping A mapping that map a paper ID to the ID of its children
+    * @return The list of ancestors of subRoot
+    */
 	static private ArrayList<Integer> filterAncestor(int subRoot, HashMap<Integer, ArrayList<Integer>> childrenMapping) {
 		ArrayList<Integer> listExplored = new ArrayList<Integer>();
 		ArrayList<Integer> listToBeExplored = new ArrayList<Integer>();
@@ -1067,16 +1173,18 @@ public class Main extends Application {
 		return listExplored;
 
 	}
-	
-	static private void updateStatusText(StringProperty statusText, String strIn) {
-		if (statusText.getValue() == null) {
-			statusText.setValue(strIn);
-		}else {
-			statusText.setValue(statusText.getValue() +"\n" + strIn);
-		}
-		return;
-	}
 
+    /**
+    * (For Debugging Purpose Only)
+    * 
+    * This method will imported paper information into data
+    * Since web-scrapping consumes lot of resources of both the server and client side, 
+    * this method will be used to replace web-scrapping, when doing debugging for other non-web-scrapping components
+    * 
+    * The input (i.e. argument of paper's constructor) of this method can be obtained from exportStringButton.setOnAction() and paper.generateConstructorInput()
+    *
+    * @return The data which contains the papers' information being imported
+    */
 	static ObservableList<Paper> createSampleData() {
 		// the sample data is for debugging purpose only
 

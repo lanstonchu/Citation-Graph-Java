@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * The Paper class stores the information of one paper  
+ */
 public class Paper {
 
 	private final SimpleIntegerProperty id;
@@ -74,7 +77,12 @@ public class Paper {
 		
 	}
 
-	// this constructor is for debug purpose only, and debugFlag should be "debug"
+    /**
+    * (For Debugging Purpose Only)
+    * 
+    * This constructor is for debug purpose only, and debugFlag should be "debug"
+    * @param  debugFlag   This string should be "debug" only, or we will have an error
+    */
 	Paper(int id, String title, String titleNickName, String author, String year, String arxivid, String doi, String debugFlag, String bibCode, ArrayList<String> listChildrenBibCodeArray) {
 		this(id, title, titleNickName, author, year, arxivid, doi); // call the original instructor
 		if (!debugFlag.contentEquals("debug")) {
@@ -85,7 +93,13 @@ public class Paper {
 		this.setListChildrenBibCodeArray(listChildrenBibCodeArray);
 
 	}
-	
+
+    /**
+    * This method will remove the first "{" and last "}" of the string 
+    *
+    * @param  string   The input string that may contains spaces and "{...}"
+    * @return         The string after removing the unwanted elements
+    */
 	private String removeBrackets(String strIn){
 
 		strIn = strIn.trim();
@@ -95,8 +109,12 @@ public class Paper {
 		return strIn;
 	}
 	
-	// parse authors in string
-	// update mainAuthorStr and authorNumInt
+    /**
+    * This method will parse authors in string
+    * and update mainAuthorStr and authorNumInt
+    *
+    * @param  authorsStr   The string that may contains multiple authors, i.e. "Peter and Paul and Mary" (i.e. 3 authors)
+    */
 	private void parseAuthors(String authorsStr){
 
 		String iAuthor;
@@ -134,7 +152,11 @@ public class Paper {
 		return;
 	}
 	
-
+    /**
+    * To parse the ArXiv ID of the .bib file, which may remove the prefix or version number etc.
+    *
+    * @param  arxivIdStr   The string that may contains the unwanted elements
+    */
 	private void parseArxivId(String arxivIdStr){
 		
 		arxivIdStr = arxivIdStr.trim();
@@ -158,10 +180,17 @@ public class Paper {
 			this.arxivIdNoVerStr = removeBrackets(arxivIdStr.substring(0, vPosi)); // remove version number from ArXiv No.
 		}
 	}
-	
+
+	/**
+	 * (For Debugging Purpose Only)
+	 * 
+	 * this will generate the constructor being used to create new papers, based on some information of the imported papers
+	 * the output of this method can be used as the input of createSampleData()
+    *
+    * @param  debugFlag   false : get constructor input    ;    true : get constructor input after the web-scrapping process
+    * @return         The string that can be used as the input arguments of the papers' constructor
+    */
 	public String generateConstructorInput(boolean debugFlag) {
-		// debugFlag = false : get constructor input
-		// debugFlag = true : get constructor input after the webscrapping process (for debugging)
 		
 		String stringTotal = "new Paper(";
 		

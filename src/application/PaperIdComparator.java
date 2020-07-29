@@ -2,6 +2,10 @@ package application;
 
 import java.util.Comparator;
 
+/**
+ * The PaperIdComparator class sort the papers by their ID
+ * @see PaperYearComparator
+ */
 public class PaperIdComparator implements Comparator<Paper> {
 
 	@Override

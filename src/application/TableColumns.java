@@ -5,7 +5,9 @@ import java.util.function.Function;
 import javafx.beans.property.Property;
 import javafx.scene.control.TableColumn;
 
-
+/**
+ * The TableColumns class is used to create and configure the TableColumn objects in TableView of JavaFX
+ */
 public class TableColumns<S,T> {
 
 	// property is a method in Paper which returns Properties, i.e. setTitleProperty

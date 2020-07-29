@@ -9,6 +9,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * The RadioButtonGroup class contains a hbox, in which there is a label and a group of radio buttons
+ */
 public class RadioButtonGroup {
 	private final ToggleGroup toggleGroup;
 	private final VBox vBox;

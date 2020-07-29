@@ -2,7 +2,10 @@ package application;
 
 import java.util.Comparator;
 
-// this class is used to compare the papers by year
+/**
+ * The PaperYearComparator class sort the papers by their year
+ * @see PaperIdComparator
+ */
 public class PaperYearComparator implements Comparator<Paper>{
 
 	@Override

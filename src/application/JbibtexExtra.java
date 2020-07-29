@@ -12,6 +12,10 @@ import org.jbibtex.BibTeXString;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 
+/**
+ * The JbibtexExtra class are some additional codes apart from the original Jbibtex library
+ * These codes would be used to parse a .bib file 
+ */
 public class JbibtexExtra {
 
 	static public BibTeXDatabase parseBibTeX(File file) throws IOException, ParseException {

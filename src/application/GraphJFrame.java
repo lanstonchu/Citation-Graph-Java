@@ -15,6 +15,9 @@ import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
+/**
+ * The GraphJFrame class provides canvas on which a citation graph can be drawn  
+ */
 public class GraphJFrame extends JFrame {
 
 	final static int defaultSizeX = 1000;
@@ -33,6 +36,18 @@ public class GraphJFrame extends JFrame {
 		return;
 	}
 
+    /**
+    * To draw citation graph 
+    *
+    * @param  sizeX   The desired width of graph window
+    * @param  sizeY   The desired height of graph window
+    * @param  fromVertices   The from-side-vertices of the edges of the graph (for papers's citational relationship)
+    * @param  toVertices   The to-side-vertices of the edges of the graph (for papers's citational relationship)
+    * @param  vertexLabels   The text of vertices labels (for selected papers)
+    * @param  validId   The list of ID of the selected papers
+    * @param  showSingletonFlag   Whether we want to show the papers without any citational relationship
+    *  
+    */
 	public void drawJFrame (int sizeX, int sizeY, ArrayList<Integer> fromVertices, ArrayList<Integer> toVertices, 
 			ArrayList<String> vertexLabels, ArrayList<Integer> validId, boolean showSingletonFlag) {
 
@@ -139,6 +154,9 @@ public class GraphJFrame extends JFrame {
 		return;
 	}
 
+    /**
+    * Union (set operation) of 2 sets
+    */
 	static public <T> ArrayList<T> union(List<T> list1, List<T> list2) {
 		Set<T> set = new HashSet<T>();
 
