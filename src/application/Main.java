@@ -458,7 +458,7 @@ public class Main extends Application {
 		});
 
 		// ------- PART II.1 - Tab 1 button(s)/Control ---------
-		
+
 		// import .bib file
 		buttonImport.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -472,7 +472,6 @@ public class Main extends Application {
 			@Override
 			public void handle(final ActionEvent e) {			
 
-				System.out.println("A file is now being chosen ... ");
 				updateStatusText(statusText, "A file is now being chosen ... ");
 
 				File bibFile = fileChooser.showOpenDialog(primaryStage);			
@@ -483,14 +482,14 @@ public class Main extends Application {
 					// update the text next to button		        
 					labelFileName.setText(bibFileName);
 
-					System.out.println("The File is chosen. ");
 					updateStatusText(statusText, "The File is chosen. ");
 					selectionModel.select(tab2); //select by object
 
-					// Parse the .bib file
+					// Parse the .bib file					
 					BibTeXDatabase database;
 
 					try {
+
 						database = JbibtexExtra.parseBibTeX(bibFile); // parse the .bib file to get BibTeXDatabase object
 
 						Map<Key, BibTeXEntry> entryMap = database.getEntries();	    
@@ -545,10 +544,20 @@ public class Main extends Application {
 							data.add(new Paper(id, titleStr,titleNickNameStr, authorStr,yearStr, arxivIdStr, doiStr));
 						}
 
-					} catch (IOException | ParseException e1) {
+					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 						throw new RuntimeException("Some error happened.");
+					}catch (ParseException e2) { // some characters in the .bib file may not be valid
+
+						String e2Msg = e2.getMessage();
+						int errLine = Integer.parseInt(search_by_head_tail(e2Msg,"line ",", column"));					
+						String errMsg = "ParseException: Some characters in the .bib file may be invalie to the bib-parser.\n"
+								+ " Please remove the paper which contains line "
+								+ (errLine - 1) + " (probably last line of the paper) in the .bib,\n"
+								+ " and then re-import the .bib file.";
+						updateStatusText(statusText, errMsg);
+
 					}
 
 
@@ -558,7 +567,7 @@ public class Main extends Application {
 		});
 
 		// ------- PART II.2 - Tab 2 button(s)/Control ---------
-		
+
 		// Tab 2 Radio buttons group to show title vs. nickname
 		group2b.selectedToggleProperty().addListener(new ChangeListener<Toggle>() { 
 
@@ -726,7 +735,6 @@ public class Main extends Application {
 						j+=1;
 
 						// print out the index of paper being scrapped
-						System.out.println("Paper: Scrapping " + j + " of " + numPapers);
 						updateStatusText(statusText, "Paper: Scrapping " + j + " of " + numPapers);
 
 						String arXivID = paper.getArxivIdNoVerStr();
@@ -759,7 +767,6 @@ public class Main extends Application {
 						num_Ref = search_by_head_tail(num_Ref, "(", ")");
 
 						// print out the no. of references
-						System.out.println("Refrences: (" + num_Ref + ")");
 						updateStatusText(statusText, "Refrences: (" + num_Ref + ")");
 
 						// find the position of papers' titles
@@ -804,15 +811,13 @@ public class Main extends Application {
 				}catch (SessionNotCreatedException e2) {
 					e2.printStackTrace();
 
-					System.out.println("");
-					System.out.println("SessionNotCreatedException: It is very likely that your Google Chrome Driver is not in line with your current version (nor OS)");
-					System.out.println("Please visit    `https://sites.google.com/a/chromium.org/chromedriver/downloads`    to download the driver that suits your Google Chrome version, ");
-					System.out.println("and then replace the file in `" + driverPath + "` by the downloaded file");
-
-					updateStatusText(statusText, "");
-					updateStatusText(statusText, "SessionNotCreatedException: It is very likely that your Google Chrome Driver is not in line with your current version (nor OS)");
-					updateStatusText(statusText, "Please visit    `https://sites.google.com/a/chromium.org/chromedriver/downloads`    to download the driver that suits your Google Chrome version, ");
-					updateStatusText(statusText, "and then replace the file in `" + driverPath + "` by the downloaded file");
+					String errMsg = "\n"
+							+ "SessionNotCreatedException: It is very likely that your Google Chrome Driver is not in line with your current version (nor OS) \n"
+							+ " Please visit    `https://sites.google.com/a/chromium.org/chromedriver/downloads`    to download the driver that suits your Google Chrome version, \n"
+							+ " and then replace the file in `" + driverPath + "` by the downloaded file";
+					
+					System.out.println(errMsg);
+					updateStatusText(statusText, errMsg);
 
 					throw new RuntimeException("RuntimeException.");
 				}
@@ -848,7 +853,7 @@ public class Main extends Application {
 		});
 
 		// ------- PART II.3 - Tab 3 button(s)/Control ---------
-		
+
 		// Graph theory
 
 		// Tab 3: clicking Refresh-button
@@ -1028,14 +1033,16 @@ public class Main extends Application {
 
 	} // end of "public void start()"
 
-    /**
-    * To update status text 
-    *
-    * @param  statusText   The text object that need text being updated
-    * @param  strIn   The latest text to be printed on the text object
-    * @see statusText.addListener()
-    */
+	/**
+	 * To update status text 
+	 *
+	 * @param  statusText   The text object that need text being updated
+	 * @param  strIn   The latest text to be printed on the text object
+	 * @see statusText.addListener()
+	 */
 	static private void updateStatusText(StringProperty statusText, String strIn) {
+		System.out.println(strIn); // print the message to the terminal as well
+		
 		if (statusText.getValue() == null) {
 			statusText.setValue(strIn);
 		}else {
@@ -1043,18 +1050,18 @@ public class Main extends Application {
 		}
 		return;
 	}
-	
-    /**
-    * this method will search for the first head matching the result
-    * and then search for the first tail-after-1st-head
-    * and return the text between first head and first tail-after-1st-head
-    * e.g. search_by_head_tail("<id>123</id>", "<id>", "</id>") outputs "123"
-    *
-    * @param  longText   The text that we need to search for, e.g. some html source codes
-    * @param  head   The "head-bracket" of the text that we concerned, i.e. "<id>"
-    * @param  tail   The "tail-bracket" of the text that we concerned, i.e. "</id>"
-    * @return         The first piece of text surrounded by head and tail
-    */
+
+	/**
+	 * this method will search for the first head matching the result
+	 * and then search for the first tail-after-1st-head
+	 * and return the text between first head and first tail-after-1st-head
+	 * e.g. search_by_head_tail("<id>123</id>", "<id>", "</id>") outputs "123"
+	 *
+	 * @param  longText   The text that we need to search for, e.g. some html source codes
+	 * @param  head   The "head-bracket" of the text that we concerned, i.e. "<id>"
+	 * @param  tail   The "tail-bracket" of the text that we concerned, i.e. "</id>"
+	 * @return         The first piece of text surrounded by head and tail
+	 */
 	static private String search_by_head_tail(String longText, String head, String tail) {
 
 		int headPosi = longText.indexOf(head);
@@ -1064,12 +1071,12 @@ public class Main extends Application {
 		return phase_extracted;
 	}
 
-    /**
-    * this method add matched ID to listChildrenIdArray of each papers, based on the bibCode we scrapped from the web
-    *
-    * @param  data   The collection of papers
-    * @param  bibCodeChild   The bibCode of children of a specific paper; scrapped from web
-    */
+	/**
+	 * this method add matched ID to listChildrenIdArray of each papers, based on the bibCode we scrapped from the web
+	 *
+	 * @param  data   The collection of papers
+	 * @param  bibCodeChild   The bibCode of children of a specific paper; scrapped from web
+	 */
 	static private void parseChildrenBibCodeToID(ObservableList<Paper> data) {
 
 		for (Paper paper : data) {
@@ -1094,11 +1101,11 @@ public class Main extends Application {
 
 	}
 
-    /**
-    * get the maximum ID of the existing papers, properly after some manually addition/removal of papers by the user
-    *
-    * @param  data   The collection of papers
-    */
+	/**
+	 * get the maximum ID of the existing papers, properly after some manually addition/removal of papers by the user
+	 *
+	 * @param  data   The collection of papers
+	 */
 	static private int getMaxID(ObservableList<Paper> data) {
 		int maxId = 0;
 		for (Paper paper: data) {
@@ -1108,14 +1115,14 @@ public class Main extends Application {
 
 	}	
 
-    /**
-    * this method will cut the input string into pieces based on the desired max. length
-    * the original purpose of this method is to avoid having too large width of the vertex of the citation graph
-    *
-    * @param  strIn   The long string to be cut into pieces
-    * @param  maxLength The desired maximum length
-    * @return The cut string with multiple "\n" 
-    */
+	/**
+	 * this method will cut the input string into pieces based on the desired max. length
+	 * the original purpose of this method is to avoid having too large width of the vertex of the citation graph
+	 *
+	 * @param  strIn   The long string to be cut into pieces
+	 * @param  maxLength The desired maximum length
+	 * @return The cut string with multiple "\n" 
+	 */
 	static private String cutString(String strIn, int maxLength) {
 
 		String strRemained = strIn;
@@ -1142,13 +1149,13 @@ public class Main extends Application {
 
 	}
 
-    /**
-    * To generate a sub-set of papers, which only keep the ancestors of the paper manually selected by the user
-    *
-    * @param  subRoot   The ID of the paper manuall chosen by the user
-    * @param  childrenMapping A mapping that map a paper ID to the ID of its children
-    * @return The list of ancestors of subRoot
-    */
+	/**
+	 * To generate a sub-set of papers, which only keep the ancestors of the paper manually selected by the user
+	 *
+	 * @param  subRoot   The ID of the paper manuall chosen by the user
+	 * @param  childrenMapping A mapping that map a paper ID to the ID of its children
+	 * @return The list of ancestors of subRoot
+	 */
 	static private ArrayList<Integer> filterAncestor(int subRoot, HashMap<Integer, ArrayList<Integer>> childrenMapping) {
 		ArrayList<Integer> listExplored = new ArrayList<Integer>();
 		ArrayList<Integer> listToBeExplored = new ArrayList<Integer>();
@@ -1174,17 +1181,17 @@ public class Main extends Application {
 
 	}
 
-    /**
-    * (For Debugging Purpose Only)
-    * 
-    * This method will imported paper information into data
-    * Since web-scrapping consumes lot of resources of both the server and client side, 
-    * this method will be used to replace web-scrapping, when doing debugging for other non-web-scrapping components
-    * 
-    * The input (i.e. argument of paper's constructor) of this method can be obtained from exportStringButton.setOnAction() and paper.generateConstructorInput()
-    *
-    * @return The data which contains the papers' information being imported
-    */
+	/**
+	 * (For Debugging Purpose Only)
+	 * 
+	 * This method will imported paper information into data
+	 * Since web-scrapping consumes lot of resources of both the server and client side, 
+	 * this method will be used to replace web-scrapping, when doing debugging for other non-web-scrapping components
+	 * 
+	 * The input (i.e. argument of paper's constructor) of this method can be obtained from exportStringButton.setOnAction() and paper.generateConstructorInput()
+	 *
+	 * @return The data which contains the papers' information being imported
+	 */
 	static ObservableList<Paper> createSampleData() {
 		// the sample data is for debugging purpose only
 
