@@ -548,16 +548,26 @@ public class Main extends Application {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 						throw new RuntimeException("Some error happened.");
-					}catch (ParseException e2) { // some characters in the .bib file may not be valid
+					}catch (ParseException e2) { // some characters in the .bib file may be invalid
 
 						String e2Msg = e2.getMessage();
 						int errLine = Integer.parseInt(search_by_head_tail(e2Msg,"line ",", column"));					
 						String errMsg = "ParseException: Some characters in the .bib file may be invalie to the bib-parser.\n"
-								+ " Please remove the paper which contains line "
+								+ " Please remove the paper (or just remove the invalid character) which contains line "
 								+ (errLine - 1) + " (probably last line of the paper) in the .bib,\n"
 								+ " and then re-import the .bib file.";
+						updateStatusText(statusText, e2Msg);
 						updateStatusText(statusText, errMsg);
 
+					}catch (TokenMgrException e3) { // some characters of a nickname in the .bib file may be invalid
+						String e3Msg = e3.getMessage();
+						int errLine = Integer.parseInt(search_by_head_tail(e3Msg,"line ",", column"));					
+						String errMsg = "TokenMgrException: Some characters in the .bib file may be invalie to the bib-parser.\n"
+								+ " Please remove the paper (or just modify the nickname) which contains line "
+								+ errLine+ " (probably first line of the paper) in the .bib,\n"
+								+ " and then re-import the .bib file.";
+						updateStatusText(statusText, e3Msg);
+						updateStatusText(statusText, errMsg);						
 					}
 
 
