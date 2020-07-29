@@ -37,18 +37,18 @@ Overview: This tool is written by Java and based on JavaFX. The tool will automa
 
 --------------------------
 
-**Procedures:**
+**Procedures (Tested in Windows 10):**
 
-1. Download Chrome Driver at [here][6] with respect to your Chrome version and OS (the current versions stored in `/chrome_driver` is for Chrome version v83, and is for Windows only)
+1. Download Chrome Driver at [here][6] with respect to your Chrome version and OS (the current versions stored in `/chrome_driver` is for Chrome version v83, and is for Windows only). Rename the driver as `chromedriver_win32.exe` and put it in `/chrome_driver`.
 2. Select papers from your references management software (e.g. Mendeley) and export to .bib file.
-3. Locate your JavaFX lib path, e.g. `C:\Program Files\Java\javafx-sdk-11.0.2\lib` in Windows 10
-4. In your command windows (e.g. `cmd`), execute `java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules javafx.controls,javafx.fxml -jar executable.jar` to run `executable.jar`.
-5. If you modified the source code and would like to generate a new jar file, go to the project director and run `jar -cfm executable.jar manifest.txt -C ./bin .`
+3. Locate your JavaFX lib path, e.g. `C:\Program Files\Java\javafx-sdk-11.0.2\lib` in Windows
+4. In your command window (e.g. `cmd`), execute `java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules javafx.controls,javafx.fxml -jar executable.jar` to run `executable.jar`.
+5. If you modified the source code and would like to generate a new jar file, go to the project directory and run `jar -cfm executable.jar manifest.txt -C ./bin .`
 ---------------------------
 
 **Trouble shooting:**
 
-1. If your Chrome driver doesn't work, please confirm you are using the correct driver version.
+1. If your Chrome driver doesn't work, please confirm that you are using the correct driver version. If you renamed your driver as `chromedriver_MacOS.exe` or something else, please modify the link in the source code as well and then re-generate the jar.
 2. Some references quoted by the paper may not be contained in the database (i.e. [Astrophysics Data System of Harvard][4]). If the number of references of a specific paper exceed 25 in the database, and only the first 25 references will be extracted.
 3. If you don't have JavaFX lib, you can download it from [here][14]. Unzip the folder and place it to somewhere in your computer. Record the path for later use.
 4. If you need to download JavaFX lib or if your javafx-sdk is not v11.0.2, you may need to re-build the path in Eclipse. Right click the project name "Citation-Graph-Java" in Eclipse, and then `Build Path` -> `Configure Build Path...`. Add libraries to Classpath, including JavaFX SDK as well as other JavaFX jar files downloaded.
