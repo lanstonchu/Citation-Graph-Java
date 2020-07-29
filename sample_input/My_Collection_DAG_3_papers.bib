@@ -1,0 +1,64 @@
+@article{Goodfellow2014a,
+abstract = {Several machine learning models, including neural networks, consistently misclassify adversarial examples---inputs formed by applying small but intentionally worst-case perturbations to examples from the dataset, such that the perturbed input results in the model outputting an incorrect answer with high confidence. Early attempts at explaining this phenomenon focused on nonlinearity and overfitting. We argue instead that the primary cause of neural networks' vulnerability to adversarial perturbation is their linear nature. This explanation is supported by new quantitative results while giving the first explanation of the most intriguing fact about them: their generalization across architectures and training sets. Moreover, this view yields a simple and fast method of generating adversarial examples. Using this approach to provide examples for adversarial training, we reduce the test set error of a maxout network on the MNIST dataset.},
+annote = {Adversarial trainingd},
+archivePrefix = {arXiv},
+arxivId = {1412.6572},
+author = {Goodfellow, Ian J. and Shlens, Jonathon and Szegedy, Christian},
+eprint = {1412.6572},
+file = {:C$\backslash$:/Users/Lanston/Documents/GitHub/MLSP-Courses-UW-Madison/PhD/Reference Papers/1412.6572.pdf:pdf},
+keywords = {Adversarial Training,Defense},
+mendeley-tags = {Adversarial Training,Defense},
+pages = {1--11},
+title = {{Explaining and Harnessing Adversarial Examples}},
+url = {http://arxiv.org/abs/1412.6572},
+year = {2014}
+}
+
+@article{Carlini2017,
+abstract = {Neural networks provide state-of-the-art results for most machine learning tasks. Unfortunately, neural networks are vulnerable to adversarial examples: given an input {\$}x{\$} and any target classification {\$}t{\$}, it is possible to find a new input {\$}x'{\$} that is similar to {\$}x{\$} but classified as {\$}t{\$}. This makes it difficult to apply neural networks in security-critical areas. Defensive distillation is a recently proposed approach that can take an arbitrary neural network, and increase its robustness, reducing the success rate of current attacks' ability to find adversarial examples from {\$}95\backslash{\%}{\$} to {\$}0.5\backslash{\%}{\$}. In this paper, we demonstrate that defensive distillation does not significantly increase the robustness of neural networks by introducing three new attack algorithms that are successful on both distilled and undistilled neural networks with {\$}100\backslash{\%}{\$} probability. Our attacks are tailored to three distance metrics used previously in the literature, and when compared to previous adversarial example generation algorithms, our attacks are often much more effective (and never worse). Furthermore, we propose using high-confidence adversarial examples in a simple transferability test we show can also be used to break defensive distillation. We hope our attacks will be used as a benchmark in future defense attempts to create neural networks that resist adversarial examples.},
+annote = {C{\&}W attack method, against distillation
+
+optimization based. formulation see P.9
+c is a pre-selected constant
+
+7 choice of f (the best = f{\_}6)
+3 choice of box method (the best = method{\_}3 = COV)},
+archivePrefix = {arXiv},
+arxivId = {arXiv:1608.04644v2},
+author = {Carlini, Nicholas and Wagner, David},
+doi = {10.1109/SP.2017.49},
+eprint = {arXiv:1608.04644v2},
+file = {:C$\backslash$:/Users/Lanston/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Carlini, Wagner - 2017 - Towards Evaluating the Robustness of Neural Networks.pdf:pdf},
+isbn = {9781509055326},
+issn = {10816011},
+journal = {Proceedings - IEEE Symposium on Security and Privacy},
+keywords = {Attack,C{\&}W},
+mendeley-tags = {Attack,C{\&}W},
+pages = {39--57},
+title = {{Towards Evaluating the Robustness of Neural Networks}},
+url = {https://zhuanlan.zhihu.com/p/39285664},
+year = {2017}
+}
+
+@techreport{Zheng2016,
+abstract = {In this paper we address the issue of output instability of deep neural networks: small perturbations in the visual input can significantly distort the feature embeddings and output of a neural network. Such instability affects many deep architectures with state-of-the-art performance on a wide range of computer vision tasks. We present a general stability training method to stabilize deep networks against small input distortions that result from various types of common image processing, such as compression, rescaling, and cropping. We validate our method by stabilizing the state-of-the-art Inception architecture [11] against these types of distortions. In addition, we demonstrate that our stabilized model gives robust state-of-the-art performance on large-scale near-duplicate detection, similar-image ranking, and classification on noisy datasets.},
+annote = {training against perturbation due to natural process (not premeditated attackers)
+
+$\epsilon${\~{}}Gaussian
+x'=x+$\epsilon$
+
+natural process:
+1. JPEG-q
+2. Thumb-A
+3. Random cropping},
+archivePrefix = {arXiv},
+arxivId = {1604.04326v1},
+author = {Zheng, Stephan and Song, Yang and Leung, Thomas and Goodfellow, Ian},
+eprint = {1604.04326v1},
+file = {:C$\backslash$:/Users/Lanston/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Zheng Google et al. - Unknown - Improving the Robustness of Deep Neural Networks via Stability Training(2).pdf:pdf},
+isbn = {1604.04326v1},
+keywords = {Data Augmentation,Defense,Stability Training},
+mendeley-tags = {Data Augmentation,Defense,Stability Training},
+title = {{Improving the Robustness of Deep Neural Networks via Stability Training}},
+year = {2016}
+}
