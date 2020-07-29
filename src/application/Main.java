@@ -289,7 +289,7 @@ public class Main extends Application {
 
 		final Button addButton = new Button("Add");
 
-		hbox2d.getChildren().addAll(addTitle, addAllAuthor, addYear, addButton, label2Error);
+		hbox2d.getChildren().addAll(new Label("To add "), addTitle, addAllAuthor, addYear, addButton, label2Error);
 		hbox2d.setSpacing(3);
 
 		// Create button to remove paper from data
@@ -302,7 +302,7 @@ public class Main extends Application {
 		removeId.setPrefWidth(idCol.getPrefWidth());
 
 		final Label label2Error_b = new Label("");
-		final Button removeButton = new Button("Go");
+		final Button removeButton = new Button("Remove");
 
 		hbox2e.getChildren().addAll(label2Remove, removeId, removeButton, label2Error_b);
 
@@ -337,6 +337,10 @@ public class Main extends Application {
 
 		final Button buttonRefresh = new Button("Generate / Refresh");
 
+		final Label labelGraphSetting = new Label("Graph Setting:                        ");
+		labelGraphSetting.setFont(new Font("Arial", 16));
+		final HBox hboxGraphSetting = new HBox(labelGraphSetting);
+		
 		// Group A: Title vs Nickname
 		RadioButtonGroup rbg3a = new RadioButtonGroup("Show nickname?    ", new ArrayList<String>(Arrays.asList("Title     ", "Nickname  ")));
 		final HBox hbox3a = rbg3a.getHBox();
@@ -352,6 +356,10 @@ public class Main extends Application {
 		final HBox hbox3c = rbg3c.getHBox();
 		final ToggleGroup group3c = rbg3c.getToggleGroup();
 
+		final Label labelPaperSelection = new Label("Paper Selection:                    ");
+		labelPaperSelection.setFont(new Font("Arial", 16));
+		final HBox hboxPaperSelection = new HBox(labelPaperSelection);
+		
 		// Group D: Year range		
 		final TextField  textIn3d1 = new TextField(); // year from
 		final TextField  textIn3d2 = new TextField(); // year to
@@ -368,19 +376,21 @@ public class Main extends Application {
 		label3Error.setTextFill(Color.web("#eb5534")); // updated label color
 
 		// Group E: Specific root
-		hbox3e.getChildren().addAll(new Label("Only show ancestors of "), textIn3d3, new Label(" (paper ID)"));
-		textIn3d3.setPromptText("ID");
+		hbox3e.getChildren().addAll(new Label("Only show ancestors of "), textIn3d3);
+		textIn3d3.setPromptText("Paper ID");
 
 		// Group F: Show singleton vs hide singleton
 		RadioButtonGroup rbg3f = new RadioButtonGroup("Singleton?                  ", new ArrayList<String>(Arrays.asList("Hide         ", "Show         ")));
 		final HBox hbox3f = rbg3f.getHBox();
 		final ToggleGroup group3f = rbg3f.getToggleGroup();
 				
-		vbox3R.getChildren().addAll(hbox3a, hbox3b, hbox3c, hbox3d, label3Error, hbox3e, buttonRefresh, hbox3f);
+		vbox3R.getChildren().addAll(hboxGraphSetting, hbox3a, hbox3b, hbox3c, buttonRefresh, hboxPaperSelection, hbox3d, label3Error, hbox3e, hbox3f);
 
+		hboxGraphSetting.setAlignment(Pos.CENTER_RIGHT);
 		hbox3a.setAlignment(Pos.CENTER_RIGHT);
 		hbox3b.setAlignment(Pos.CENTER_RIGHT);
 		hbox3c.setAlignment(Pos.CENTER_RIGHT);
+		hboxPaperSelection.setAlignment(Pos.CENTER_RIGHT);
 		hbox3d.setAlignment(Pos.CENTER_RIGHT);
 		label3Error.setAlignment(Pos.CENTER_RIGHT);
 		hbox3e.setAlignment(Pos.CENTER_RIGHT);
@@ -493,7 +503,7 @@ public class Main extends Application {
 							try {
 								yearStr = entry.getField(BibTeXEntry.KEY_YEAR).toUserString();
 							}catch (NullPointerException eNull) {
-								yearStr = "";
+								yearStr = "0";
 							}
 
 							try {
