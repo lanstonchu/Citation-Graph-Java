@@ -20,10 +20,8 @@ Overview: This tool is written by Java and based on JavaFX. The tool will automa
     |         ├──Main.java    
     |         └──*.java
     ├──/bin
-    |    ├──/application
-    |    |    └──*.class    
-    |    ├──manifest.txt    
-    |    └──executable.jar    
+    |    └──/application
+    |         └──*.class    
     ├──/chrome_driver
     |    └──chromedriver_win32.exe    
     └──/jar_3rd_party              
@@ -33,7 +31,9 @@ Overview: This tool is written by Java and based on JavaFX. The tool will automa
     |    └──jgraphx-XX.YY.ZZ.jar    
     ├──/sample_input
     |    └──*.bib    
-    └──README.md
+    ├──README.md
+    ├──manifest.txt    
+    └──executable.jar    
 
 --------------------------
 
@@ -43,7 +43,7 @@ Overview: This tool is written by Java and based on JavaFX. The tool will automa
 2. Select papers from your references management software (e.g. Mendeley) and export to .bib file.
 3. Locate your JavaFX lib path, e.g. `C:\Program Files\Java\javafx-sdk-11.0.2\lib` in Windows 10
 4. In your command windows (e.g. `cmd`), execute `java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules javafx.controls,javafx.fxml -jar executable.jar` to run `executable.jar`.
-5. If you modified the source code and would like to generate a new jar file, go inside `/bin` and run `jar -cfm executable.jar manifest.txt .`
+5. If you modified the source code and would like to generate a new jar file, go to the project director and run `jar -cfm executable.jar manifest.txt -C ./bin .`
 ---------------------------
 
 **Trouble shooting:**

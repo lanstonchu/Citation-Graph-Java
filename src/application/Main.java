@@ -660,8 +660,8 @@ public class Main extends Application {
 
 			String projectPathEclipse = System.getProperty("user.dir");
 			Path projectPath = Paths.get(projectPathEclipse, "../");
-			// String driverPath = projectPathEclipse + "/chrome_driver/chromedriver_win32.exe"; // use this line in Eclipse
-			String driverPath = projectPath + "/chrome_driver/chromedriver_win32.exe"; // use this line in cmd
+			String driverPath = projectPathEclipse + "/chrome_driver/chromedriver_win32.exe"; // use this line in Eclipse; or create .jar in /[project]
+			// String driverPath = projectPath + "/chrome_driver/chromedriver_win32.exe"; // use this line if to create .jar in /[project]/bin
 			
 			@Override
 			public void handle(ActionEvent e) {
