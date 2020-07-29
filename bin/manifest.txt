@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
 Created-By: deppeler
+Main-Class: application.Main
 Class-Path: 
  json-simple-1.1.1.jar 
  ../jar_3rd_party/jbibtex-1.0.17.jar 
@@ -11,4 +12,3 @@ Class-Path:
  ../jar_3rd_party/selenium-java-3.141.59/libs/guava-25.0-jre.jar 
  ../jar_3rd_party/selenium-java-3.141.59/libs/okhttp-3.11.0.jar 
  ../jar_3rd_party/selenium-java-3.141.59/libs/okio-1.14.0.jar
-Main-Class: application.Main

@@ -10,6 +10,8 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -87,14 +89,14 @@ public class Main extends Application {
 
 	
 	// unhide below 2 lines for debugging; hide in normal use
-	private final int debugFlag = 1;
-	private final ObservableList<Paper> data = createSampleData();
+	// private final int debugFlag = 1;
+	// private final ObservableList<Paper> data = createSampleData();
 
 	
 	
 	// unhide below 2 lines for normal use; hide when debugging
-	// private final int debugFlag = 0;
-	// private final ObservableList<Paper> data = FXCollections.observableArrayList(); // create blank list
+	private final int debugFlag = 0;
+	private final ObservableList<Paper> data = FXCollections.observableArrayList(); // create blank list
 
 	
 	// For graph drawing
@@ -646,9 +648,11 @@ public class Main extends Application {
 			String absLinkSuffix = "/abstract";
 			String refLinkSuffix = "/references";
 
-			String projectPath = System.getProperty("user.dir");
-			String driverPath = projectPath + "/chrome_driver/chromedriver_win32.exe";
-
+			String projectPathEclipse = System.getProperty("user.dir");
+			Path projectPath = Paths.get(projectPathEclipse, "../");
+			// String driverPath = projectPathEclipse + "/chrome_driver/chromedriver_win32.exe"; // use this line in Eclipse
+			String driverPath = projectPath + "/chrome_driver/chromedriver_win32.exe"; // use this line in cmd
+			
 			@Override
 			public void handle(ActionEvent e) {
 
