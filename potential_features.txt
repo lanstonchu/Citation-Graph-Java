@@ -1,0 +1,7 @@
+This file stores potential new features of the project:
+
+- To do web scrapping based on DOI, if ArXiD is not available
+-- probably use the API of the OpenCitation database (http://opencitations.net/datasets)
+- add checkboxes to select web scrapping source
+- To do web scrapping for all references, if #(references) > 25 in the Havard's database
+- Show all descendants of a selected paper
