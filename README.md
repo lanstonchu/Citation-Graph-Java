@@ -52,6 +52,7 @@ Overview: This tool is written by Java and based on JavaFX. The tool will automa
 2. Some references quoted by the paper may not be contained in the database (i.e. [Astrophysics Data System of Harvard][4]). If the number of references of a specific paper exceed 25 in the database, and only the first 25 references will be extracted.
 3. If you don't have JavaFX lib, you can download it from [here][14]. Unzip the folder and place it to somewhere in your computer. Record the path for later use.
 4. If you need to download JavaFX lib or if your javafx-sdk is not v11.0.2, you may need to re-build the path in Eclipse. Right click the project name "Citation-Graph-Java" in Eclipse, and then `Build Path` -> `Configure Build Path...`. Add libraries to Classpath, including JavaFX SDK as well as other JavaFX jar files downloaded.
+5. If you received `ParseException` or `TokenMgrException` etc. errors from the Bib-parser, you may need to modify the information of the paper, or simply remove the entire paper, by following the instruction of the error message.
 
 -----------------------------------------
 
